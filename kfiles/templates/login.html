@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block sub-head %}
+<link href="{% static "login.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+<form class="form-signin" role="form" method="POST" action=".">
+	<h2 class="form-signin-heading">Please sign in</h2>
+	<input name="username" type="email" class="form-control" placeholder="Email address" required autofocus>
+	<input name="password" type="password" class="form-control" placeholder="Password" required>
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+	{% csrf_token %}
+</form>
+
+<p>If this is your first time logging in or you've forgotten your password, you will need to <a href="{% url 'kfiles.views.password_reset' %}">create a new password</a>.</p>
+
+{% endblock %}

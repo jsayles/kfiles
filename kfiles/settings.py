@@ -35,6 +35,7 @@ INSTALLED_APPS = (
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+	'django.contrib.sites',
 	'kfiles',
 )
 
@@ -49,8 +50,19 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'kfiles.urls'
 
+SITE_ID = 2
+
 WSGI_APPLICATION = 'kfiles.wsgi.application'
 
+# URL that handles login
+LOGIN_URL='/login/'
+LOGIN_REDIRECT_URL="/"
+
+# Auth Backends
+AUTHENTICATION_BACKENDS = (
+	'kfiles.backends.EmailOrUsernameModelBackend',
+	'django.contrib.auth.backends.ModelBackend'
+)
 
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
@@ -61,6 +73,22 @@ DATABASES = {
 		'NAME': os.path.join(BASE_DIR, 'data/.kfiles.db'),
 	}
 }
+
+TEMPLATE_LOADERS = (
+	'django.template.loaders.filesystem.Loader',
+	'django.template.loaders.app_directories.Loader',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+	"django.contrib.auth.context_processors.auth",
+	"django.core.context_processors.debug",
+	"django.core.context_processors.i18n",
+	"django.core.context_processors.media",
+	"django.core.context_processors.static",
+	"django.core.context_processors.request",
+	"django.contrib.messages.context_processors.messages",
+	"kfiles.context_processors.site",
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
