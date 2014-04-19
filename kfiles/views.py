@@ -1,9 +1,11 @@
 from django.conf import settings
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render, render_to_response, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404, HttpResponseServerError, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.template import RequestContext, Template
+from forms import UploadFileForm
+from models import File_Upload
 
 @login_required
 def index(request):
@@ -11,8 +13,6 @@ def index(request):
 
 	from django.http import HttpResponseRedirect
 	from django.shortcuts import render
-	from .forms import UploadFileForm
-	from .models import ModelWithFileField
 
 def upload_file(request):
 	if request.method == 'POST':

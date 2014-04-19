@@ -9,3 +9,4 @@ media
 .settings
 .DS_Store
 db.sqlite3
+data
