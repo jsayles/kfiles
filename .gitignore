@@ -1,0 +1,11 @@
+.svn
+*.pyc
+*.class
+pip-log.txt
+local_settings.py
+media
+.project
+.pydevproject
+.settings
+.DS_Store
+db.sqlite3
