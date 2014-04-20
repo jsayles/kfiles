@@ -47,7 +47,7 @@
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				{% if request.user.is_staff %}
-					<li class="active"><a href="/projects">Projects</a></li>
+					<li class="active"><a href="{% url 'kfiles.views.projects' %}">Projects</a></li>
 					<li><a href="/users">Users</a></li>
 					<li><a href="/admin">Admin</a></li>
 				{% endif %}

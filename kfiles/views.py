@@ -8,8 +8,10 @@ from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, Http404, HttpResponseServerError, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.template import RequestContext, Template
+from django.template.defaultfilters import slugify
+
 from forms import UploadFileForm
-from models import File_Upload
+from models import Project, File_Upload
 
 @login_required
 def index(request):
@@ -36,6 +38,22 @@ def password_reset(request, is_admin_site=False, template_name='password_reset_f
 	else:
 		form = password_reset_form()
 	return render_to_response(template_name, {'form': form}, context_instance=RequestContext(request))
+
+def projects(request):
+	page_message = None
+	if 'project_name' in request.POST:
+		project_name = request.POST.get('project_name')
+		project_slug = slugify(project_name)
+		if Project.objects.filter(slug=project_slug):
+			page_message = "Invalid Project Name"
+		else:
+			Project.objects.create(name=project_name, slug=project_slug)
+	projects = Project.objects.all()
+	return render_to_response('projects.html',{'page_message':page_message, 'projects':projects}, RequestContext(request))
+
+def project_view(request, project_id):
+	project = get_object_or_404(Project, pk=project_id)
+	return render_to_response('project_view.html',{'project':project}, RequestContext(request))
 
 def upload_file(request):
 	if request.method == 'POST':

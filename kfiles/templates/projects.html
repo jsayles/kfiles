@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Projects</h2>
+{% if page_message %}
+	<div class="effor">{{ page_message }}</div>
+{% endif %}
+
+<table class="table table-hover">
+	<tr>
+		<th>Created</th>
+		<th>Name</th>
+		<th>Users</th>
+		<th>Files</th>
+	</tr>
+<tbody>
+{% for project in projects %}
+	<tr>
+		<td>{{ project.createdTS }}</td>
+		<td><a href="{% url 'kfiles.views.project_view' project.id %}">{{ project.name }}</a></td>
+		<td></td>
+		<td></td>
+	</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<form role="form" method="POST" action=".">
+	<h2>Add Project</h2>
+	<input name="project_name" type="email" class="form-control" placeholder="Project Name" required autofocus>
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Create New Project</button>
+	{% csrf_token %}
+</form>
+
+{% endblock %}

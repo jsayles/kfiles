@@ -16,6 +16,10 @@ body {
   margin-bottom: 60px;
 }
 
+table { 
+	background-color: white;
+}
+
 #footer {
   position: absolute;
   bottom: 0;
