@@ -18,6 +18,6 @@
 	{% csrf_token %}
 </form>
 
-<p>If this is your first time logging in or you've forgotten your password, you will need to <a href="{% url 'kfiles.views.password_reset' %}">create a new password</a>.</p>
+<p class="footnote">If this is your first time logging in or you've forgotten your password, you will need to <a href="{% url 'kfiles.views.password_reset' %}">create a new password</a>.</p>
 
 {% endblock %}
