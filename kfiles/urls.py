@@ -11,7 +11,7 @@ urlpatterns = patterns('',
 	
 	url(r'^$', 'kfiles.views.index', name='home'),
 	url(r'^project/$', 'kfiles.views.projects', name='projects'),
-	url(r'^project/(?P<project_id>\d+)$', 'kfiles.views.project_view', name='project_view'),
+	url(r'^project/(?P<slug>[^/]+)$', 'kfiles.views.project_view', name='project_view'),
 	
 	url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
 	url(r'^logout/$', 'django.contrib.auth.views.logout_then_login'),	

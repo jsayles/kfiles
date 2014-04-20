@@ -45,14 +45,14 @@ def projects(request):
 		project_name = request.POST.get('project_name')
 		project_slug = slugify(project_name)
 		if Project.objects.filter(slug=project_slug):
-			page_message = "Invalid Project Name"
+			page_message = "That project name is taken."
 		else:
 			Project.objects.create(name=project_name, slug=project_slug)
 	projects = Project.objects.all()
 	return render_to_response('projects.html',{'page_message':page_message, 'projects':projects}, RequestContext(request))
 
-def project_view(request, project_id):
-	project = get_object_or_404(Project, pk=project_id)
+def project_view(request, slug):
+	project = get_object_or_404(Project, slug=slug)
 	return render_to_response('project_view.html',{'project':project}, RequestContext(request))
 
 def upload_file(request):
