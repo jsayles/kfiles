@@ -108,3 +108,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/'
+
+EMAIL_ADDRESS = "katie@example.com"
+EMAIL_HOST = "smtp.example"
+EMAIL_PORT = 26
+EMAIL_HOST_USER = "email-user"
+EMAIL_HOST_PASSWORD = "email-pass"
+EMAIL_USE_TLS = True
+
+# Import the local settings file
+from local_settings import *
+
