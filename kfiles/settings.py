@@ -118,4 +118,3 @@ EMAIL_USE_TLS = True
 
 # Import the local settings file
 from local_settings import *
-
