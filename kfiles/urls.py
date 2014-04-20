@@ -1,10 +1,12 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.views.generic.base import RedirectView
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
-	(r'^robots\.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", mimetype="text/plain")),
+	url(r'^robots\.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", mimetype="text/plain")),
+	url(r'^favicon.ico*$', RedirectView.as_view(url='/static/favicon.ico', permanent=True)),
 
 	url(r'^admin/', include(admin.site.urls)),
 	url(r'^$', 'kfiles.views.index', name='home'),

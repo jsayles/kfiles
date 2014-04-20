@@ -50,7 +50,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'kfiles.urls'
 
-SITE_ID = 2
+SITE_ID = 1
 
 WSGI_APPLICATION = 'kfiles.wsgi.application'
 
