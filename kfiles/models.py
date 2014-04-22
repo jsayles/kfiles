@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
+from django.conf import settings
 
 class ProjectManager(models.Manager):
 	def files(self):
@@ -15,12 +16,22 @@ class Project(models.Model):
 	name = models.CharField(max_length=200)
 	slug = models.CharField(max_length=60)
 
+	def __unicode__(self):
+	   return self.name
+
 class Project_Member(models.Model):
 	project = models.ForeignKey(Project)
 	user = models.ForeignKey(User, blank=True, null=True, unique=False)
 
+	def __unicode__(self):
+	   return "%s - %s" % (self.project, self.user)
+
 class File_Upload(models.Model):
 	uploadTS = models.DateTimeField(auto_now_add=True)
 	project = models.ForeignKey(Project)
-	user = models.ForeignKey(User, blank=True, null=True, unique=False)
-	file = models.FileField()
+	user = models.ForeignKey(User, blank=False)
+	slug = models.CharField(max_length=60)
+	file = models.FileField(upload_to=settings.DATA_DIR, blank=False)
+
+	def __unicode__(self):
+	   return self.file.name

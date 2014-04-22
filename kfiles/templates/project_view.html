@@ -23,4 +23,11 @@
 </tbody>
 </table>
 
+<form role="form" method="POST" action=".">
+	<h2>Upload File</h2>
+	<input name="file" type="file">
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Upload</button>
+	{% csrf_token %}
+</form>
+
 {% endblock %}

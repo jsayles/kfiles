@@ -52,7 +52,16 @@ def projects(request):
 	return render_to_response('projects.html',{'page_message':page_message, 'projects':projects}, RequestContext(request))
 
 def project_view(request, slug):
+	#if not request.user.is_staff
 	project = get_object_or_404(Project, slug=slug)
+	if request.method == 'POST':
+		form = UploadFileForm(request.POST, request.FILES)
+		if form.is_valid():
+			upload = FileUpload(user=request.user, file=request.FILES['file'])
+			upload.save()
+	else:
+		form = UploadFileForm()
+	
 	return render_to_response('project_view.html',{'project':project}, RequestContext(request))
 
 def upload_file(request):
