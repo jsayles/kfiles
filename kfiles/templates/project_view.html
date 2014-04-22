@@ -4,26 +4,31 @@
 
 <h2>{{ project.name }}</h2>
 
+{% if page_message %}
+	<div class="error">{{ page_message }}</div>
+{% endif %}
+
 <h3>Files</h3>
 <table class="table table-hover">
 	<tr>
-		<th>Uploaded</th>
-		<th>User</th>
 		<th>File Name</th>
+		<th>User</th>
+		<th>Uploaded</th>
+		<th>Size</th>
 	</tr>
 <tbody>
 {% for file in project.files %}
 	<tr>
+		<td><a href="{% url 'kfiles.views.file_download' project.slug file.name %}">{{ file.name }}</a></td>
+		<td>{{ file.user }}</td>
 		<td>{{ file.uploadTS }}</td>
-		<td><a href="">{{ file.user }}</a></td>
-		<td><a href="">{{ file.file_field }}</a></td>
-		<td></td>
+		<td>{{ file.file.size | filesizeformat }}</td>
 	</tr>
 {% endfor %}
 </tbody>
 </table>
 
-<form role="form" method="POST" action=".">
+<form role="form" method="POST" enctype="multipart/form-data" action="{% url 'kfiles.views.project_view' project.slug %}">
 	<h2>Upload File</h2>
 	<input name="file" type="file">
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Upload</button>

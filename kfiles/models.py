@@ -16,6 +16,12 @@ class Project(models.Model):
 	name = models.CharField(max_length=200)
 	slug = models.CharField(max_length=60)
 
+	def files(self):
+		return File_Upload.objects.filter(project=self)
+
+	def members(self):
+		return Project_Member.objects.filter(project=self)
+
 	def __unicode__(self):
 	   return self.name
 
@@ -30,7 +36,8 @@ class File_Upload(models.Model):
 	uploadTS = models.DateTimeField(auto_now_add=True)
 	project = models.ForeignKey(Project)
 	user = models.ForeignKey(User, blank=False)
-	slug = models.CharField(max_length=60)
+	name = models.CharField(max_length=64)
+	content_type = models.CharField(max_length=64)
 	file = models.FileField(upload_to=settings.DATA_DIR, blank=False)
 
 	def __unicode__(self):

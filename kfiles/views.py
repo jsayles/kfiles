@@ -39,6 +39,7 @@ def password_reset(request, is_admin_site=False, template_name='password_reset_f
 		form = password_reset_form()
 	return render_to_response(template_name, {'form': form}, context_instance=RequestContext(request))
 
+@login_required
 def projects(request):
 	page_message = None
 	if 'project_name' in request.POST:
@@ -51,26 +52,30 @@ def projects(request):
 	projects = Project.objects.all()
 	return render_to_response('projects.html',{'page_message':page_message, 'projects':projects}, RequestContext(request))
 
-def project_view(request, slug):
-	#if not request.user.is_staff
-	project = get_object_or_404(Project, slug=slug)
-	if request.method == 'POST':
-		form = UploadFileForm(request.POST, request.FILES)
-		if form.is_valid():
-			upload = FileUpload(user=request.user, file=request.FILES['file'])
+@login_required
+def project_view(request, project_slug):
+	page_message = None
+	project = get_object_or_404(Project, slug=project_slug)
+	if 'file' in request.FILES:
+		try:
+			file=request.FILES['file']
+			upload = File_Upload(user=request.user, project=project, 
+				file=file, name=file.name, content_type=file.content_type)
 			upload.save()
+		except:
+			page_message = "Could not save file"
 	else:
 		form = UploadFileForm()
-	
-	return render_to_response('project_view.html',{'project':project}, RequestContext(request))
 
-def upload_file(request):
-	if request.method == 'POST':
-		form = UploadFileForm(request.POST, request.FILES)
-		if form.is_valid():
-			instance = ModelWithFileField(file_field=request.FILES['file'])
-			instance.save()
-			return HttpResponseRedirect('/success/url/')
-	else:
-		form = UploadFileForm()
-	return render(request, 'upload.html', {'form': form})
+	return render_to_response('project_view.html',{'page_message':page_message, 'project':project}, RequestContext(request))
+
+@login_required
+def file_download(request, project_slug, file_name):
+	if not request.user.is_staff: 
+		return HttpResponseRedirect(reverse('kfiles.views.project_view', kwargs={'page_message':'You do not have permission to download files', 'project_slug':project_slug}))
+	project = get_object_or_404(Project, slug=project_slug)
+	file_upload = File_Upload.objects.get(project=project, name=file_name)
+	response = HttpResponse(file_upload.file, content_type=file_upload.content_type)
+	response['Content-Disposition'] = 'attachment; filename="%s"' % file_upload.name
+	return response
+	
