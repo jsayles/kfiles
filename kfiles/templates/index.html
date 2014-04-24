@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 
+{% block extrajs %}
+	<script>
+	$("#brand-tab").addClass('active');
+	</script>
+{% endblock %}
+
 {% block content %}
-<h1>Hello, Katie!</h1>
+	{% autoescape off %}
+		{{ page_text }}
+	{% endautoescape %}
 {% endblock %}

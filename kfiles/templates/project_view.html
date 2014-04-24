@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 
+{% block extrajs %}
+	<script>
+	$("#projects-tab").addClass('active');
+	</script>
+{% endblock %}
+
 {% block content %}
 
-<h2>{{ project.name }}</h2>
+<h2>Project: {{ project.name }}</h2>
 
 {% if page_message %}
 	<div class="error">{{ page_message }}</div>
@@ -17,9 +23,9 @@
 		<th>Size</th>
 	</tr>
 <tbody>
-{% for file in project.files %}
+{% for file in files %}
 	<tr>
-		<td><a href="{% url 'kfiles.views.file_download' project.slug file.name %}">{{ file.name }}</a></td>
+		<td><a href="{% url 'file_download' project.slug file.name %}">{{ file.name }}</a></td>
 		<td>{{ file.user }}</td>
 		<td>{{ file.uploadTS }}</td>
 		<td>{{ file.file.size | filesizeformat }}</td>
@@ -28,11 +34,36 @@
 </tbody>
 </table>
 
-<form role="form" method="POST" enctype="multipart/form-data" action="{% url 'kfiles.views.project_view' project.slug %}">
-	<h2>Upload File</h2>
-	<input name="file" type="file">
-	<button class="btn btn-lg btn-primary btn-block" type="submit">Upload</button>
+<h3>Upload File</h3>
+<form role="form" method="POST" enctype="multipart/form-data" action="{% url 'project_view' project.slug %}">
+	<span class="btn btn-default btn-file"><input name="file" type="file"></span>
+	<button class="btn btn-primary" type="submit">Upload</button>
 	{% csrf_token %}
 </form>
+
+{% if request.user.is_staff %}
+
+<h3>Project Users</h3>
+<table class="table table-hover">
+	<tr>
+		<th>Email</th>
+	</tr>
+<tbody>
+{% for pu in project_users %}
+	<tr>
+		<td><a href="{% url 'user_view' pu.user.id %}">{{ pu.user.email }}</a></td>
+	</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<h3>Add Users</h3>
+<form role="form" method="POST" action="{% url 'project_users' project.slug %}">
+	<textarea name="emails" class="form-control" ></textarea>
+	<button class="btn btn-primary" type="submit">Upload</button>
+	{% csrf_token %}
+</form>
+
+{% endif %}
 
 {% endblock %}

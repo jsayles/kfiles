@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% block extrajs %}
+	<script>
+	$("#projects-tab").addClass('active');
+	</script>
+{% endblock %}
+
 {% block content %}
 
 <h2>Projects</h2>
@@ -19,19 +25,21 @@
 {% for project in projects %}
 	<tr>
 		<td>{{ project.createdTS }}</td>
-		<td><a href="{% url 'kfiles.views.project_view' project.slug %}">{{ project.name }}</a></td>
-		<td></td>
-		<td></td>
+		<td><a href="{% url 'project_view' project.slug %}">{{ project.name }}</a></td>
+		<td>{{ project_users | length }}</td>
+		<td>{{ files | length }}</td>
 	</tr>
 {% endfor %}
 </tbody>
 </table>
 
-<form role="form" method="POST" action=".">
-	<h2>Add Project</h2>
-	<input name="project_name" type="email" class="form-control" placeholder="Project Name" required autofocus>
-	<button class="btn btn-lg btn-primary btn-block" type="submit">Create New Project</button>
-	{% csrf_token %}
-</form>
+{% if request.user.is_staff %}
+	<form role="form" method="POST" action="{% url 'kfiles.views.projects' %}">
+		<h2>Add Project</h2>
+		<input name="project_name" type="email" class="form-control" placeholder="Project Name" required autofocus>
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Create New Project</button>
+		{% csrf_token %}
+	</form>
+{% endif %}
 
 {% endblock %}

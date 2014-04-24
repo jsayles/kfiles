@@ -88,3 +88,9 @@ p.footnote {
 	width: 100%;
 	text-align: center;
 }
+
+.navbar-brand {
+	background-color: #AAA;
+	font-color: white;
+}
+}

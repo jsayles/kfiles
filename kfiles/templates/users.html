@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block extrajs %}
+	<script>
+	$("#users-tab").addClass('active');
+	</script>
+{% endblock %}
+
+{% block content %}
+
+<h2>All Users</h2>
+<table class="table table-hover">
+	<tr>
+		<th></th>
+		<th>Email</th>
+		<th>Projects</th>
+		<th>Files</th>
+	</tr>
+<tbody>
+{% for user, projects, files in users %}
+	<tr>
+		<td>{% if user.is_staff %}&#9733;{% endif %}</td>
+		<td><a href="{% url 'user_view' user.id %}">{{ user.email }}</a></td>
+		<td><a href="">{{ projects }}</a></td>
+		<td><a href="">{{ files }}</a></td>
+	</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
+

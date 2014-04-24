@@ -1,31 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
 from django.conf import settings
+from django.template import RequestContext, Template
 
-class ProjectManager(models.Manager):
-	def files(self):
-		return File_Upload.objects.filter(project=self)
-
-	def members(self):
-		return Project_Member.objects.filter(project=self)
-		
 class Project(models.Model):
-	objects = ProjectManager()
-	
 	createdTS = models.DateTimeField(auto_now_add=True)
 	name = models.CharField(max_length=200)
 	slug = models.CharField(max_length=60)
 
-	def files(self):
-		return File_Upload.objects.filter(project=self)
-
-	def members(self):
-		return Project_Member.objects.filter(project=self)
-
 	def __unicode__(self):
 	   return self.name
 
-class Project_Member(models.Model):
+class Project_User(models.Model):
 	project = models.ForeignKey(Project)
 	user = models.ForeignKey(User, blank=True, null=True, unique=False)
 
@@ -42,3 +28,14 @@ class File_Upload(models.Model):
 
 	def __unicode__(self):
 	   return self.file.name
+
+class Page_Text(models.Model):
+	page = models.CharField(max_length=128)
+	text_template = models.TextField(blank=True, null=True)
+	def __unicode__(self):
+		return self.page
+
+	def render(self, context):
+		template = Template(self.text_template)
+		rendered = template.render(context)
+		return rendered

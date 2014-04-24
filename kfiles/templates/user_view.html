@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block extrajs %}
+	<script>
+	$("#users-tab").addClass('active');
+	</script>
+{% endblock %}
+
+{% block content %}
+
+<h2>Files from: {{ user.email}}</h2>
+<table class="table table-hover">
+	<tr>
+		<th>Uploaded</th>
+		<th>Project</th>
+		<th>File</th>
+	</tr>
+<tbody>
+{% for file in files %}
+	<tr>
+		<td>{{ file.uploadTS }}</td>
+		<td><a href="{% url 'project_view' file.project.slug %}">{{ file.project.name }}</a></td>
+		<td><a href="{% url 'file_download' file.project.slug file.name %}">{{ file.name }}</a></td>
+	</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
+
