@@ -92,21 +92,21 @@ def project_users(request, project_slug):
 	project = get_object_or_404(Project, slug=project_slug)
 	if 'emails' in request.POST:
 		print "adding users: %s" % request.POST['emails']
-		#try:
-		for email in request.POST['emails'].split(','):
-			user_search = User.objects.filter(email=email)
-			if not user_search:
-				user = User(username=email, email=email)
-				user.save()
-			else:
-				user = user_search[0]
-			print user
-			pu = Project_User.objects.filter(project=project, user=user)
-			if not pu:
-				pu = Project_User(project=project, user=user)
-				pu.save()
-		#except:
-		#	page_message = "Could not add users"
+		try:
+			for email in request.POST['emails'].split(','):
+				email = email.strip()
+				user_search = User.objects.filter(email=email)
+				if not user_search:
+					user = User(username=email, email=email)
+					user.save()
+				else:
+					user = user_search[0]
+				pu = Project_User.objects.filter(project=project, user=user)
+				if not pu:
+					pu = Project_User(project=project, user=user)
+					pu.save()
+		except:
+			page_message = "Could not add users"
 	return render_to_response('project_view.html',{'page_message':page_message, 'project':project}, RequestContext(request))
 
 @login_required

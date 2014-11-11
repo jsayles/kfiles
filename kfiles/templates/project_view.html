@@ -60,7 +60,7 @@
 <h3>Add Users</h3>
 <form role="form" method="POST" action="{% url 'project_users' project.slug %}">
 	<textarea name="emails" class="form-control" ></textarea>
-	<button class="btn btn-primary" type="submit">Upload</button>
+	<button class="btn btn-primary" type="submit">Add</button>
 	{% csrf_token %}
 </form>
 
